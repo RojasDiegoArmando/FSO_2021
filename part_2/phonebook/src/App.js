@@ -1,29 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Title from './components/Title'
-import Persons from './components/Persons'
+import DisplayPersons from './components/DisplayPersons'
 import FilterPerson from './components/FilterPerson'
 import NewPerson from './components/NewPerson'
-
+import axios from 'axios'
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    {
-      id: 1,
-      name: 'Arto Hellas',
-      number: 123456789
-    },
-    {
-      id: 2,
-      name: 'Rojas Diego',
-      number: 123123123
-    },
-    {
-      id: 3,
-      name: 'Rojas Carlos',
-      number: 999999
-    }
-  ])
-
+  const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newSearch, setNewSearch] = useState('')
@@ -39,6 +22,19 @@ const App = () => {
   const handleNewSearch = (event) => {
     setNewSearch(event.target.value)
   }
+
+  const fetchPersons = () => {
+    axios
+      .get('http://localhost:3001/persons')
+      .then(res => {
+        console.log('promise fulfilled')
+        setPersons(res.data)
+      })
+  }
+
+  useEffect(fetchPersons, [])
+
+  console.log('fetch', persons.length, 'persons')
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -70,7 +66,7 @@ const App = () => {
       <Title text='Add a new' />
       <NewPerson addPerson={addPerson} newName={newName} handleNewName={handleNewName} newNumber={newNumber} handleNewNumber={handleNewNumber} />
       <Title text='Numbers' />
-      <Persons persons={personsToShow} />
+      <DisplayPersons persons={personsToShow} />
     </div>
   )
 

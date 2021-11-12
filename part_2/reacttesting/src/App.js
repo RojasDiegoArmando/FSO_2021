@@ -1,10 +1,26 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Note from './components/Note'
+import axios from 'axios'
+import Test from './components/Test'
+import Todos from './components/Todos'
 
-const App = (props) => {
-  const [notes, setNotes] = useState(props.notes)
+const App = () => {
+  const [notes, setNotes] = useState([])
   const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
+
+  const hook = () => {
+    console.log('efect')
+    axios.get('http://localhost:3001/notes')
+      .then(res => {
+        console.log('promise fulfilled')
+        setNotes(res.data)
+      })
+  }
+
+  //useEffect(hook, [])
+
+  console.log('render', notes.length, 'notes')
 
   const handleNoteChange = (event) => {
     console.log(event.target.value)
@@ -27,7 +43,23 @@ const App = (props) => {
     ? notes
     : notes.filter(note => note.important === true)
 
-
+  const initialTodos = [
+    {
+      id: 1,
+      name: 'Do laundry',
+      complete: false
+    },
+    {
+      id: 2,
+      name: 'Wash Dishes',
+      complete: true
+    },
+    {
+      id: 3,
+      name: 'Study',
+      complete: false
+    }
+  ]
   return (
     <div>
       <h1>Notes</h1>
@@ -43,6 +75,9 @@ const App = (props) => {
         <input value={newNote} onChange={handleNoteChange} />
         <button type='submit'>save</button>
       </form>
+      <br />
+
+      <Todos initialTodos={initialTodos} />
     </div>
   )
 }

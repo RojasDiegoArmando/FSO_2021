@@ -1,7 +1,7 @@
 import React from 'react'
 import Person from './Person'
 
-const Persons = ({ persons }) => {
+const DisplayPersons = ({ persons }) => {
     return (
         <div>
             <ul>
@@ -17,4 +17,4 @@ const Persons = ({ persons }) => {
     )
 }
 
-export default Persons
+export default DisplayPersons
