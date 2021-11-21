@@ -1,9 +1,17 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Country from './Country'
-
+import fetchWeather from '../services/fetchWeather'
+import Weather from './Weather'
 const DisplayCountries = ({ countries }) => {
-    console.log(countries.length);
-    if (countries.length === 1) console.log(countries[0])
+    const [weatherData, setWeatherData] = useState('')
+
+    useEffect(() => {
+        if (countries.length === 1) {
+            fetchWeather(countries[0].name.common)
+                .then((res) => setWeatherData(res))
+        }
+    }, [countries])
+
     return (
         <div>
             {countries.length >= 10 &&
@@ -20,7 +28,15 @@ const DisplayCountries = ({ countries }) => {
                     />
                 </div>
             )}
-
+            {weatherData && (
+                <div>
+                    <Weather
+                        capital={weatherData.location.name}
+                        temp={weatherData.current.temperature}
+                        wind={weatherData.current.wind_speed}
+                    />
+                </div>
+            )}
             {countries.length === 0 &&
                 <p>Please type some!</p>
             }

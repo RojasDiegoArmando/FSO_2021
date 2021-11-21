@@ -2,19 +2,24 @@ import React, { useState, useEffect } from 'react'
 import Search from './components/Search'
 import DisplayCountries from './components/DisplayCountries'
 import fetchCountries from './services/fetchCountries'
+import useDebounce from './hooks/useDebounce'
 
 const App = () => {
   const [countries, setCountries] = useState([])
   const [newSearch, setNewSearch] = useState('')
+  const debouncedSearch = useDebounce(newSearch, 1000)
 
   const handleNewSearch = (event) => {
     setNewSearch(event.target.value)
   }
 
   useEffect(() => {
-    fetchCountries().then(response => setCountries(response))
-  }, [])
-  console.log('fetched', countries.length, 'countries');
+    if (debouncedSearch) {
+      fetchCountries().then(response => setCountries(response))
+    } else {
+      setCountries([])
+    }
+  }, [debouncedSearch])
 
   const countriesToShow = countries.length === 0 || newSearch.length === 0
     ? []

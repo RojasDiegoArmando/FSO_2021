@@ -1,13 +1,11 @@
 import React from 'react'
 
 const Country = ({ name, capital, population, languages, flagUrl }) => {
-    console.log(languages)
     return (
         <div>
             <h1>{name}</h1>
             <p>Capital: {capital}</p>
             <p>Population: {population}</p>
-            <br />
             <h3>languages</h3>
             <ul>
                 {Object.keys(languages).map((key, i) => (
