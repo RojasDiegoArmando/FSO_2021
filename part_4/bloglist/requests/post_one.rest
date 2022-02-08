@@ -1,0 +1,11 @@
+POST http://localhost:3001/api/bloglist/
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjYyMDAxYTZmMDA5YjMzYzNiZjBkOWMzZSIsImlhdCI6MTY0NDMyMjkzNiwiZXhwIjoxNjQ0MzI2NTM2fQ.8th-tVzfC1GVeyDGWbxuY8tzv6mRUUBVPJ4oF1yEwZ0
+
+{
+    "author": "santi argento",
+    "title": "blog c",
+    "url": "bacing",
+    "likes":22,
+    "userId": "62001a6f009b33c3bf0d9c3e"
+}

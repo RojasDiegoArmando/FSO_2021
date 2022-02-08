@@ -65,12 +65,21 @@ const App = () => {
 
       numberService
         .create(newPerson)
-        .then(returnedPerson => {
+        .then((returnedPerson) => {
           setPersons(persons.concat(returnedPerson))
           setMessage(
             `Added ${returnedPerson.name}`
           )
           setStatus('add')
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
+        })
+        .catch(error => {
+          setMessage(
+            `error: ${error.response.data}`
+          )
+          setStatus('error')
           setTimeout(() => {
             setMessage(null)
           }, 5000)
@@ -88,10 +97,10 @@ const App = () => {
           .then(returnedPerson => {
             setPersons(persons.map(person => person.id !== id ? person : returnedPerson))
           })
-          .catch((error) => {
-            setPersons(persons.filter(person => person.id !== id))
+          .catch(error => {
+            console.log(error.response.data)
             setMessage(
-              `information of ${newObject.name} has already been removed from server`
+              `error: ${error.response.data}`
             )
             setStatus('error')
             setTimeout(() => {
