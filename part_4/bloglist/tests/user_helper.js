@@ -1,15 +1,13 @@
 const User = require('../models/user')
-
+const mongoose = require('mongoose')
 const initialUsers = [
     {
         username: 'root',
-        password: 'secret12',
-        blogs: []
+        password: 'secret12'
     },
     {
         username: 'user1',
-        password: 'asd12asd',
-        blogs: []
+        password: 'asd12asd'
     }
 ]
 

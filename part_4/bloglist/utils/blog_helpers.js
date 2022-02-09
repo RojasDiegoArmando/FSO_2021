@@ -6,14 +6,12 @@ const initialBlogs = [
         title: "Blog 1",
         url: "www.reddit.com",
         likes: 13,
-        user: []
     },
     {
         author: "Giuliana Hoyos",
         title: "Blog 2",
         url: "www.fullstackopen.com",
         likes: 5,
-        user: []
     },
 ]
 

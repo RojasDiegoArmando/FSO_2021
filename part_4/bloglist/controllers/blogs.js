@@ -2,14 +2,7 @@ const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
-
-const getTokenFrom = request => {
-    const authorization = request.get('authorization')
-    if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-        return authorization.substring(7)
-    }
-    return null
-}
+const { userExtractor } = require('../utils/middleware')
 
 blogsRouter.get('/', async (request, response) => {
     const blogs = await Blog
@@ -18,16 +11,10 @@ blogsRouter.get('/', async (request, response) => {
     response.json(blogs)
 })
 
-blogsRouter.post('/', async (request, response) => {
+blogsRouter.post('/', userExtractor, async (request, response) => {
     const { body: blog } = request
-    const token = getTokenFrom(request)
-    const decodedToken = jwt.verify(token, process.env.SECRET)
-    if (!decodedToken) {
-        return response.status(401).json({
-            error: 'token is missing or invalid'
-        })
-    }
-    const user = await User.findById(decodedToken.id)
+    const { userId } = request
+    const user = await User.findById(userId)
     const newBlog = new Blog({
         author: blog.author,
         title: blog.title,
@@ -41,10 +28,28 @@ blogsRouter.post('/', async (request, response) => {
     response.status(201).json(savedBlog)
 })
 
-blogsRouter.delete('/:id', async (request, response, next) => {
+blogsRouter.delete('/:id', userExtractor, async (request, response, next) => {
     const id = request.params.id
-
-    await Blog.findByIdAndDelete(id)
+    const { userId } = request
+    //const { token } = request
+    /*
+    const decodedToken = jwt.verify(token, process.env.SECRET)
+    if (!decodedToken) {
+        return response.status(401).json({
+            error: 'token is missing or invalid'
+        })
+    }
+    */
+    const blog = await Blog.findById(id)
+    const blogUserId = blog.user.toString()
+    console.log(blogUserId + ' user in params')
+    console.log(userId + ' userId middleware')
+    if (blogUserId !== userId) {
+        return response.status(401).json({
+            error: 'you cant delete other users blogs'
+        })
+    }
+    await Blog.findByIdAndDelete(blog.id)
     response.status(204).end()
 })
 

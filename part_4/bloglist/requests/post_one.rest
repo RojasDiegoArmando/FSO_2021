@@ -1,9 +1,9 @@
 POST http://localhost:3001/api/bloglist/
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjYyMDAxYTZmMDA5YjMzYzNiZjBkOWMzZSIsImlhdCI6MTY0NDMyMjkzNiwiZXhwIjoxNjQ0MzI2NTM2fQ.8th-tVzfC1GVeyDGWbxuY8tzv6mRUUBVPJ4oF1yEwZ0
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjYyMDAxYTZmMDA5YjMzYzNiZjBkOWMzZSIsImlhdCI6MTY0NDQwNzk0MCwiZXhwIjoxNjQ0NDExNTQwfQ.yb9DVps2Gc74lIh4_xeFsjdNWixCV7BvT7L8-mpIoAo
 
 {
-    "author": "santi argento",
+    "author": "santi argento 5",
     "title": "blog c",
     "url": "bacing",
     "likes":22,
