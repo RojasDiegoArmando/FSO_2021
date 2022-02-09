@@ -61,7 +61,6 @@ describe('GET method', () => {
             .get('/api/bloglist')
             .expect(200)
             .expect('Content-Type', /application\/json/)
-        console.log(response.body)
         expect(response.body).toHaveLength(initialBlogs.length)
     })
 
@@ -179,7 +178,6 @@ describe('DELETE Method', () => {
             .expect('Content-Type', /application\/json/)
 
         const { token } = authUser.body
-        console.log(token)
         const allBlogs = await blogsInDb()
         const blogToDelete = allBlogs[0]
         await api
