@@ -1,0 +1,36 @@
+button {
+    font-size: medium;
+    margin: 0.25rem;
+    padding: 1rem;
+    background-color: white;
+    border-color: grey;
+    border-radius: 0.25rem;
+}
+
+.feedbackForm {
+    width: fit-content;
+    background-color: lightpink;
+    border-radius: 0.25rem;
+    margin: 1rem;
+    padding: 0.25rem;
+}
+
+.statisticsForm {
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: fit-content;
+    background-color: lightpink;
+    border-radius: 0.25rem;
+    margin: 1rem;
+    padding: 0.25rem;
+}
+
+.statisticsForm div {
+    font-size: medium;
+    margin: 0.25rem;
+    padding: 0.5rem;
+    background-color: white;
+    border: 0.15rem solid grey;
+    border-radius: 0.25rem
+
+}

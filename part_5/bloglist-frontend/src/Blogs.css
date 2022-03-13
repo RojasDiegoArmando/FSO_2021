@@ -1,0 +1,13 @@
+.blog {
+    border-radius: 0.5rem;
+    border-style: solid;
+    border-color: black;
+    border-width: 0.15rem;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.blogDetail {
+    display: grid;
+grid-row: 1;
+}
