@@ -1,7 +1,8 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { addVote } from '../reducers/anecdoteReducer'
-import { createNotification, removeNotification } from '../reducers/notificationReducer'
+import { updateVote } from '../reducers/anecdoteReducer'
+import { setNotification } from '../reducers/notificationReducer'
 import { setTimmer } from '../reducers/timmerReducer'
+
 const AnecdoteList = (props) => {
     const state = useSelector(state => state)
     const allAnecdotes = state.anecdotes
@@ -11,18 +12,15 @@ const AnecdoteList = (props) => {
     //const anecdotes = Allanecdotes.sort((a, b) => b.votes - a.votes)
 
     const sortedAnecdotes = [...filteredAnecdotes].sort((a, b) => b.votes - a.votes)
-    console.log(filteredAnecdotes)
     const dispatch = useDispatch()
 
-    const vote = (id) => {
-        console.log('vote', id)
+    const vote = async (id) => {
         const votedAnecdote = allAnecdotes.find(a => a.id === id)
-        dispatch(addVote(id))
+        const newAnecdote = { ...votedAnecdote, votes: votedAnecdote.votes + 1 }
+        //const response = await anecdotesServices.updateVote(newAnecdote)
+        dispatch(updateVote(newAnecdote))
         clearTimeout(state.timmer)
-        dispatch(createNotification(`you voted '${votedAnecdote.content}'`))
-        dispatch(setTimmer(setTimeout(() => {
-            dispatch(removeNotification())
-        }, 5000)))
+        dispatch(setNotification(`you voted '${votedAnecdote.content}'`, 10000))
     }
     return (
         <div>

@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { setTimmer } from './timmerReducer'
 
 const notificationReducer = createSlice({
     name: 'notification',
@@ -17,4 +18,12 @@ const notificationReducer = createSlice({
 })
 
 export const { createNotification, removeNotification } = notificationReducer.actions
+export const setNotification = (content, time) => {
+    return dispatch => {
+        dispatch(createNotification(content))
+        dispatch(setTimmer(setTimeout(() => {
+            dispatch(removeNotification())
+        }, time)))
+    }
+}
 export default notificationReducer.reducer
