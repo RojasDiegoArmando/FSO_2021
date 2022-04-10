@@ -1,0 +1,2 @@
+GET https://localhost:7165/api/todoitems/2
+Content-Type:application/json

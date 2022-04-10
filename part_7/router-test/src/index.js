@@ -1,4 +1,8 @@
 import ReactDOM from 'react-dom'
+import { BrowserRouter as Router } from 'react-router-dom'
+import App from './App'
+
+/*
 import { useState } from 'react'
 
 import {
@@ -117,7 +121,7 @@ const App = () => {
   }
 
   return (
-    <div>
+    <div className='container'>
       <div>
         <Link style={padding} to="/">home</Link>
         <Link style={padding} to="/notes">notes</Link>
@@ -142,6 +146,7 @@ const App = () => {
     </div>
   )
 }
+*/
 
 ReactDOM.render(<Router><App /></Router>, document.getElementById('root'))
 
