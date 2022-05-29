@@ -1,0 +1,8 @@
+POST http://localhost:3001/api/notes
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjYxZmJiYmQyMTg5NTRkMGQ1ZWZhNGFkYSIsImlhdCI6MTY0NDE1OTMxMiwiZXhwIjoxNjQ0MTU5MzcyfQ.FIS_87MCi-2IRo7l9befYXNSZ5GY4EQ342TjJCUkOUc
+
+{
+    "content": "Expired Token - Web token 2 for root",
+    "important": true
+}

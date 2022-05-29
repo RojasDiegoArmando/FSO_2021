@@ -1,0 +1,17 @@
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name": "Giuliana Hoyos",
+    "number": 123123132
+}
+
+###
+
+POST https://whispering-caverns-59705.herokuapp.com/api/persons
+Content-Type: application/json
+
+{
+    "name": "Giuliana Hoyos",
+    "number": 123123132
+}
