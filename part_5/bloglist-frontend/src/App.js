@@ -5,13 +5,17 @@ import blogService from './services/blogs'
 import LoginForm from './components/LoginForm'
 import loginService from './services/login'
 import Notification from './components/Notifications'
+import { useDispatch } from 'react-redux'
+import {
+    createNotification,
+    removeNotification,
+} from './reducers/notificationReducer'
+import { setTimer } from './reducers/timerReducer'
 
 const App = () => {
+    const dispatch = useDispatch()
     let [blogs, setBlogs] = useState([])
     const [user, setUser] = useState(null)
-    const [message, setMessage] = useState('')
-    const [messageType, setMessageType] = useState('')
-    const [timmer, setTimmer] = useState('')
     const blogRef = useRef()
 
     useEffect(() => {
@@ -26,7 +30,8 @@ const App = () => {
     }, [])
 
     useEffect(() => {
-        const loggedBloglistUser = window.localStorage.getItem('loggedBloglistUser')
+        const loggedBloglistUser =
+            window.localStorage.getItem('loggedBloglistUser')
         if (loggedBloglistUser) {
             const user = JSON.parse(loggedBloglistUser)
             setUser(user)
@@ -42,45 +47,65 @@ const App = () => {
             console.log(blogAdded)
             const newBlogs = blogs.concat(blogAdded)
             setBlogs(newBlogs)
-            clearTimeout(timmer)
-            setMessage(`a new blog ${newBlog.title} by ${newBlog.author} added`)
-            setMessageType('add')
-            setTimmer(setTimeout(() => {
-                setMessage('')
-                setMessageType('')
-            }, 5000))
+            dispatch(
+                createNotification({
+                    message: `a new blog ${newBlog.title} by ${newBlog.author} added`,
+                    type: 'add',
+                })
+            )
+            setTimer(
+                setTimeout(() => {
+                    dispatch(removeNotification())
+                }, 5000)
+            )
             blogRef.current.toggleVisibility()
         } catch (error) {
-            clearTimeout(timmer)
-            setMessage(`error: ${error.response.data.error}`)
-            setMessageType('error')
-            setTimmer(setTimeout(() => {
-                setMessage('')
-                setMessageType('')
-            }, 5000))
+            dispatch(
+                createNotification({
+                    message: `error: ${error.response.data.error}`,
+                    type: 'error',
+                })
+            )
+            setTimer(
+                setTimeout(() => {
+                    dispatch(removeNotification())
+                }, 5000)
+            )
         }
     }
 
     const modifyBlog = async (newBlog, id) => {
         try {
             await blogService.put(newBlog, id)
-            const newBlogs = blogs.map(blog => blog.title === newBlog.title ? { ...blog, likes: blog.likes + 1 } : blog)
+            const newBlogs = blogs.map((blog) =>
+                blog.title === newBlog.title
+                    ? { ...blog, likes: blog.likes + 1 }
+                    : blog
+            )
             setBlogs(newBlogs)
-            clearTimeout(timmer)
-            setMessage(`Like added to ${newBlog.title}`)
-            setMessageType('add')
-            setTimmer(setTimeout(() => {
-                setMessage('')
-                setMessageType('')
-            }, 5000))
+            dispatch(
+                createNotification({
+                    message: `Like added to ${newBlog.title}`,
+                    type: 'add',
+                })
+            )
+            setTimer(
+                setTimeout(() => {
+                    dispatch(removeNotification())
+                }, 5000)
+            )
         } catch (error) {
-            clearTimeout(timmer)
-            setMessage(`error: ${error.response.data.error}`)
-            setMessageType('error')
-            setTimmer(setTimeout(() => {
-                setMessage('')
-                setMessageType('')
-            }, 5000))
+            dispatch(
+                createNotification({
+                    message: `error: ${error.response.data.error}`,
+                    type: 'error',
+                })
+            )
+            setTimer(
+                setTimeout(() => {
+                    dispatch(removeNotification())
+                }, 5000)
+            )
         }
     }
 
@@ -93,18 +118,25 @@ const App = () => {
     const handleLogin = async (userObj) => {
         try {
             const user = await loginService.login(userObj)
-            window.localStorage.setItem('loggedBloglistUser', JSON.stringify(user))
+            window.localStorage.setItem(
+                'loggedBloglistUser',
+                JSON.stringify(user)
+            )
             blogService.setToken(user.token)
             setUser(user)
         } catch (error) {
-            clearTimeout(timmer)
             setUser(null)
-            setMessage(error.response.data.error)
-            setMessageType('error')
-            setTimmer(setTimeout(() => {
-                setMessage('')
-                setMessageType('')
-            }, 5000))
+            dispatch(
+                createNotification({
+                    message: `error: ${error.response.data.error}`,
+                    type: 'error',
+                })
+            )
+            setTimer(
+                setTimeout(() => {
+                    dispatch(removeNotification())
+                }, 5000)
+            )
         }
     }
 
@@ -112,39 +144,55 @@ const App = () => {
         try {
             await blogService.deleteBlog(blogToDelete.id)
             console.log(blogToDelete)
-            const newBlogs = blogs.filter(blog => blog.title !== blogToDelete.title)
+            const newBlogs = blogs.filter(
+                (blog) => blog.title !== blogToDelete.title
+            )
             setBlogs(newBlogs)
-            clearTimeout(timmer)
-            setMessage(`${blogToDelete.title} deleted!`)
-            setMessageType('add')
-            setMessageType('error')
-            setTimmer(setTimeout(() => {
-                setMessage('')
-                setMessageType('')
-            }, 5000))
+            dispatch(
+                createNotification({
+                    message: `${blogToDelete.title} deleted!`,
+                    type: 'error',
+                })
+            )
+            setTimer(
+                setTimeout(() => {
+                    dispatch(removeNotification())
+                }, 5000)
+            )
         } catch (error) {
-            clearTimeout(timmer)
-            setMessage(`error: ${error.response.data.error}`)
-            setMessageType('error')
-            setMessageType('error')
-            setTimmer(setTimeout(() => {
-                setMessage('')
-                setMessageType('')
-            }, 5000))
+            dispatch(
+                createNotification({
+                    message: `error: ${error.response.data.error}`,
+                    type: 'error',
+                })
+            )
+            setTimer(
+                setTimeout(() => {
+                    dispatch(removeNotification())
+                }, 5000)
+            )
         }
     }
     return (
         <div>
             <h2>blogs-app</h2>
 
-            <Notification message={message} type={messageType} />
-            {user !== null && <LogoutForm name={user.name} handleLogout={handleLogout} />}
+            <Notification />
+            {user !== null && (
+                <LogoutForm name={user.name} handleLogout={handleLogout} />
+            )}
             <br />
-            {
-                user === null
-                    ? <LoginForm handleLogin={handleLogin} />
-                    : <Logged blogs={blogs} toggableRef={blogRef} createNewBlog={createNewBlog} modifyBlog={modifyBlog} deleteBlog={handleDelete} />
-            }
+            {user === null ? (
+                <LoginForm handleLogin={handleLogin} />
+            ) : (
+                <Logged
+                    blogs={blogs}
+                    toggableRef={blogRef}
+                    createNewBlog={createNewBlog}
+                    modifyBlog={modifyBlog}
+                    deleteBlog={handleDelete}
+                />
+            )}
         </div>
     )
 }
