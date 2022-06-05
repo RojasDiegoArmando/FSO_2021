@@ -11,7 +11,7 @@ const Blog = ({ blog, modifyBlog, deleteBlog }) => {
     const handleLike = (event) => {
         event.preventDefault()
         const newBlog = { ...blog, likes: blog.likes + 1 }
-        modifyBlog(newBlog, blog.id)
+        modifyBlog(newBlog, newBlog.id)
     }
 
     const handleDelete = (event) => {
@@ -22,22 +22,26 @@ const Blog = ({ blog, modifyBlog, deleteBlog }) => {
     }
 
     return (
-        <div className='blog'>
-            <div style={hideWhenVisible} id='blog-hide'>
-                {blog.title} {blog.author} <button onClick={toggleVisibility}>view</button>
+        <div className="blog">
+            <div style={hideWhenVisible} id="blog-hide">
+                {blog.title} {blog.author}{' '}
+                <button onClick={toggleVisibility}>view</button>
             </div>
-            <div style={showWhenVisible} id='blog-show'>
+            <div style={showWhenVisible} id="blog-show">
                 <div>
-                    {blog.title} {blog.author} <button onClick={toggleVisibility}>hide</button>
+                    {blog.title} {blog.author}{' '}
+                    <button onClick={toggleVisibility}>hide</button>
                 </div>
                 <div>{blog.url}</div>
-                <div>likes {blog.likes} <button onClick={handleLike}>like</button></div>
+                <div>
+                    likes {blog.likes}{' '}
+                    <button onClick={handleLike}>like</button>
+                </div>
 
                 <button onClick={handleDelete}>Delete</button>
             </div>
         </div>
     )
 }
-
 
 export default Blog
