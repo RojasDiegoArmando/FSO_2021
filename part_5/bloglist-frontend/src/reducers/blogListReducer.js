@@ -35,7 +35,6 @@ export const initializeBlogList = () => {
     return async (dispatch) => {
         const blogList = await blogServices.getAll()
         const sortedBlogs = blogList.sort((a, b) => b.likes - a.likes)
-        console.log(sortedBlogs)
         dispatch(setBlogList(sortedBlogs))
     }
 }
@@ -43,7 +42,6 @@ export const initializeBlogList = () => {
 export const createBlog = (blog) => {
     return async (dispatch) => {
         const newBlog = await blogServices.create(blog)
-        console.log(newBlog)
         dispatch(appendBlog(newBlog))
     }
 }
@@ -51,7 +49,6 @@ export const createBlog = (blog) => {
 export const updateVote = (object, id) => {
     return async (dispatch) => {
         const updatedVote = await blogServices.put(object, id)
-        console.log(updatedVote)
         dispatch(updateBlog(updatedVote))
     }
 }

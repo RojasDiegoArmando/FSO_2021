@@ -1,10 +1,68 @@
 import { useState } from 'react'
 import '../Blogs.css'
+import { setNotification } from '../reducers/notificationReducer'
+import { updateVote, deleteBlogFromList } from '../reducers/blogListReducer'
+import { useDispatch } from 'react-redux'
 
-const Blog = ({ blog, modifyBlog, deleteBlog }) => {
+const Blog = ({ blog }) => {
+    const dispatch = useDispatch()
     const [visible, setVisible] = useState(false)
     const hideWhenVisible = { display: visible ? 'none' : '' }
     const showWhenVisible = { display: visible ? '' : 'none' }
+
+    const modifyBlog = async (newBlog, id) => {
+        try {
+            dispatch(updateVote(newBlog, id))
+            dispatch(
+                setNotification(
+                    {
+                        message: `Like added to ${newBlog.title}`,
+                        type: 'add',
+                    },
+                    5000
+                )
+            )
+        } catch (error) {
+            setNotification(
+                {
+                    message: `error: ${
+                        error.response
+                            ? error.response.data.error
+                            : error.response
+                    }`,
+                    type: 'error',
+                },
+                5000
+            )
+        }
+    }
+
+    const deleteBlog = async (blogToDelete) => {
+        try {
+            dispatch(deleteBlogFromList(blogToDelete))
+            dispatch(
+                setNotification(
+                    {
+                        message: `${blogToDelete.title} deleted!`,
+                        type: 'error',
+                    },
+                    5000
+                )
+            )
+        } catch (error) {
+            setNotification(
+                {
+                    message: `error: ${
+                        error.response
+                            ? error.response.data.error
+                            : error.response
+                    }`,
+                    type: 'error',
+                },
+                5000
+            )
+        }
+    }
 
     const toggleVisibility = () => setVisible(!visible)
 

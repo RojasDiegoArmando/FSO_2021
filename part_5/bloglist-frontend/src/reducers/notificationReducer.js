@@ -1,17 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { setTimer } from './timerReducer'
+import { setTimer, clearTimer } from './timerReducer'
 
 const notificationReducer = createSlice({
     name: 'notification',
     initialState: '',
     reducers: {
         createNotification(state, action) {
-            clearTimeout(state.timer)
             state = action.payload
             return state
         },
         removeNotification(state, _action) {
-            clearTimeout(state.timer)
             state = ''
             return state
         },
@@ -20,9 +18,10 @@ const notificationReducer = createSlice({
 
 export const { createNotification, removeNotification } =
     notificationReducer.actions
-export const setNotification = (content, time) => {
+export const setNotification = (object, time) => {
     return (dispatch) => {
-        dispatch(createNotification(content))
+        dispatch(createNotification(object))
+        dispatch(clearTimer())
         dispatch(
             setTimer(
                 setTimeout(() => {
