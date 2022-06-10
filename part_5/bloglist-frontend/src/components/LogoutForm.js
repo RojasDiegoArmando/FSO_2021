@@ -5,7 +5,6 @@ import blogServices from '../services/blogs'
 const LogoutForm = () => {
     const dispatch = useDispatch()
     const state = useSelector((state) => state)
-    console.log(state)
 
     const handleLogout = () => {
         window.localStorage.removeItem('loggedBloglistUser')

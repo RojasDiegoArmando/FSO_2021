@@ -3,10 +3,12 @@ import Blog from './Blog'
 import AddBlogForm from './AddBlogForm'
 import Togglable from './Togglable'
 import { useSelector } from 'react-redux'
+import UsersView from './UsersView'
+
 const BlogsForm = ({ toggableRef }) => {
     const state = useSelector((state) => state)
     const { blogList } = state
-
+    console.log(state)
     return (
         <div>
             {state.login !== null && (
