@@ -1,15 +1,9 @@
 import { useSelector } from 'react-redux'
-import { Link, Routes, Route } from 'react-router-dom'
-import BlogsByUser from './BlogsByUser'
+import { Link } from 'react-router-dom'
 
 const UsersView = () => {
     const state = useSelector((state) => state)
-
     const blogs = state.blogList
-
-    const users = blogs.map((blog) => blog.user)
-
-    const newMap = new Map()
 
     let blogsByAuthorMap = blogs.reduce((acc, curr) => {
         const { name, id } = curr.user[0]
@@ -47,10 +41,6 @@ const UsersView = () => {
                     ))}
                 </tbody>
             </table>
-
-            <Routes>
-                <Route path="/users/:id" element={<BlogsByUser />} />
-            </Routes>
         </div>
     )
 }
