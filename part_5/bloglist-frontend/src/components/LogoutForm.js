@@ -11,12 +11,16 @@ const LogoutForm = () => {
         dispatch(blankUser())
         blogServices.setToken('')
     }
-
+    const style = {
+        padding: 5,
+    }
     return (
         <div>
             {state.login !== null && (
                 <div>
-                    <strong>{state.login.name} is logged in</strong>
+                    <strong style={style}>
+                        {state.login.name} is logged in
+                    </strong>
                     <button onClick={handleLogout}>Logout</button>
                 </div>
             )}

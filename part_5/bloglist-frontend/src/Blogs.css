@@ -11,3 +11,10 @@
     display: grid;
 grid-row: 1;
 }
+
+.navbar {
+    display: inline-grid;
+    grid-template-columns: auto auto auto;
+    align-items: center;
+    background-color: lightgrey;
+}

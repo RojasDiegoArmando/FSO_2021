@@ -10,13 +10,12 @@ import BlogView from './components/BlogView'
 import Notification from './components/Notifications'
 import LogoutForm from './components/LogoutForm'
 import LoginForm from './components/LoginForm'
+import Navbar from './components/Navbar'
 
 const App = () => {
     const dispatch = useDispatch()
     const blogRef = useRef()
-    const style = {
-        padding: 5,
-    }
+
     useEffect(() => {
         dispatch(initializeBlogList())
     }, [])
@@ -27,15 +26,9 @@ const App = () => {
 
     return (
         <Router>
-            <Link style={style} to="/users">
-                users
-            </Link>
-            <Link style={style} to="/">
-                home
-            </Link>
+            <Navbar />
             <Notification />
-            <LogoutForm />
-            <br />
+            <h1>Blogs</h1>
             <LoginForm />
             <Routes>
                 <Route path="/blogs/:id" element={<BlogView />} />
