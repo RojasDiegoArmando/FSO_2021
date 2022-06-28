@@ -8,7 +8,6 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import BlogsByUser from './components/BlogsByUser'
 import BlogView from './components/BlogView'
 import Notification from './components/Notifications'
-import LogoutForm from './components/LogoutForm'
 import LoginForm from './components/LoginForm'
 import Navbar from './components/Navbar'
 

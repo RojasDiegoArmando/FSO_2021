@@ -5,9 +5,7 @@ const jwt = require('jsonwebtoken')
 const { userExtractor } = require('../utils/middleware')
 
 blogsRouter.get('/', async (request, response) => {
-    const blogs = await Blog
-        .find({})
-        .populate('user', { username: 1, name: 1 })
+    const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
     response.json(blogs)
 })
 
@@ -20,7 +18,7 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
         title: blog.title,
         url: blog.url,
         likes: blog.likes,
-        user: user._id
+        user: user._id,
     })
     const savedBlog = await newBlog.save()
     user.blogs = user.blogs.concat(savedBlog)
@@ -46,7 +44,7 @@ blogsRouter.delete('/:id', userExtractor, async (request, response, next) => {
     console.log(userId + ' userId middleware')
     if (blogUserId !== userId) {
         return response.status(401).json({
-            error: 'you cant delete other users blogs'
+            error: 'you cant delete other users blogs',
         })
     }
     await Blog.findByIdAndDelete(blog.id)
@@ -61,9 +59,22 @@ blogsRouter.put('/:id', async (request, response, next) => {
         author: body.author,
         title: body.title,
         url: body.url,
-        likes: body.likes
+        likes: body.likes,
     }
 
+    const updatedBlog = await Blog.findByIdAndUpdate(id, blog, { new: true })
+    response.json(updatedBlog)
+})
+
+blogsRouter.put('/:id/comment', async (request, response) => {
+    const id = request.params.id
+    const body = request.body
+
+    const blog = await Blog.findById(id)
+    console.log(blog)
+
+    blog.comments = blog.comments.concat(body.comment)
+    console.log(blog)
     const updatedBlog = await Blog.findByIdAndUpdate(id, blog, { new: true })
     response.json(updatedBlog)
 })

@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { updateVote } from '../reducers/blogListReducer'
 import { setNotification } from '../reducers/notificationReducer'
 import { useDispatch } from 'react-redux'
-
+import Comments from './Comments'
 const BlogView = () => {
     const dispatch = useDispatch()
     const id = useParams().id
@@ -53,6 +53,12 @@ const BlogView = () => {
                 {blog.likes} likes <button onClick={handleLike}>like</button>
             </p>
             <p>added by {blog.author}</p>
+            <h2>Comments</h2>
+            <ul>
+                {blog.comments.map((e, i) => (
+                    <li key={i}>{e}</li>
+                ))}
+            </ul>
         </div>
     )
 }
