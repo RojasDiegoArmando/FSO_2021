@@ -7,7 +7,6 @@ import { useSelector } from 'react-redux'
 const BlogsForm = ({ toggableRef }) => {
     const state = useSelector((state) => state)
     const { blogList } = state
-    console.log(state)
     return (
         <div>
             {state.login !== null && (

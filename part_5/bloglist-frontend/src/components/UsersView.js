@@ -1,7 +1,12 @@
-import { useSelector } from 'react-redux'
+import { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
-
+import { initializeBlogList } from '../reducers/blogListReducer'
 const UsersView = () => {
+    const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(initializeBlogList())
+    }, [])
     const state = useSelector((state) => state)
     const blogs = state.blogList
 
@@ -16,7 +21,10 @@ const UsersView = () => {
     }, new Map())
 
     const blogsByAuthor = [...blogsByAuthorMap.values()]
-    console.log(blogsByAuthor)
+
+    if (!blogsByAuthor) {
+        return null
+    }
 
     return (
         <div>

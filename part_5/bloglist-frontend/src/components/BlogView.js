@@ -1,17 +1,19 @@
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { updateVote } from '../reducers/blogListReducer'
+import { addComment, modifyBlog } from '../reducers/blogListReducer'
 import { setNotification } from '../reducers/notificationReducer'
 import { useDispatch } from 'react-redux'
-import Comments from './Comments'
+import Togglable from './Togglable'
+import { useState } from 'react'
+import CommentForm from './CommentForm'
 const BlogView = () => {
     const dispatch = useDispatch()
     const id = useParams().id
     const { blogList } = useSelector((state) => state)
     const blog = blogList.filter((blog) => blog.id === id)[0]
-    const modifyBlog = async (newBlog, id) => {
+    const LikeBlog = async (newBlog, id) => {
         try {
-            dispatch(updateVote(newBlog, id))
+            dispatch(modifyBlog(newBlog, id))
             dispatch(
                 setNotification(
                     {
@@ -39,7 +41,7 @@ const BlogView = () => {
     const handleLike = (event) => {
         event.preventDefault()
         const newBlog = { ...blog, likes: blog.likes + 1 }
-        modifyBlog(newBlog, newBlog.id)
+        LikeBlog(newBlog, newBlog.id)
     }
 
     if (!blog) {
@@ -47,13 +49,16 @@ const BlogView = () => {
     }
     return (
         <div>
-            <h1>{blog.title}</h1>
+            <h1>
+                {blog.title} {blog.author}
+            </h1>
             <a href={blog.url}>{blog.url}</a>
             <p>
                 {blog.likes} likes <button onClick={handleLike}>like</button>
             </p>
-            <p>added by {blog.author}</p>
+            <p>added by {blog.user[0].name}</p>
             <h2>Comments</h2>
+            <CommentForm id={id} />
             <ul>
                 {blog.comments.map((e, i) => (
                     <li key={i}>{e}</li>

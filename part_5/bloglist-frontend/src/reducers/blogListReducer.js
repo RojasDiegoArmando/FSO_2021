@@ -47,10 +47,18 @@ export const createBlog = (blog) => {
     }
 }
 
-export const updateVote = (object, id) => {
+export const modifyBlog = (object, id) => {
     return async (dispatch) => {
-        const updatedVote = await blogServices.put(object, id)
-        dispatch(updateBlog(updatedVote))
+        const modifiedBlog = await blogServices.put(object, id)
+        dispatch(updateBlog(modifiedBlog))
+    }
+}
+
+export const addComment = (object, id) => {
+    return async (dispatch) => {
+        const modifiedBlog = await blogServices.putComment(object, id)
+        console.log(modifiedBlog)
+        dispatch(updateBlog(modifiedBlog))
     }
 }
 

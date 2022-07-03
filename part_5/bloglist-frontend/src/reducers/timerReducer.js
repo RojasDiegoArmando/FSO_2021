@@ -5,12 +5,10 @@ const timerReducer = createSlice({
     initialState: '',
     reducers: {
         setTimer(state, action) {
-            console.log(action.payload)
             state = action.payload
             return state
         },
         clearTimer(state, action) {
-            console.log(state)
             clearTimeout(state)
             state = ''
             return state

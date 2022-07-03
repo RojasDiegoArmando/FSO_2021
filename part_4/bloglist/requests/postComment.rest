@@ -1,8 +1,8 @@
-PUT http://localhost:3000/api/bloglist/6212dbed61672a6e39114b02/comment
+PUT http://localhost:3000/api/bloglist/62c18d533000afbf89fbaf0b/comment
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjYyMDAxYTZmMDA5YjMzYzNiZjBkOWMzZSIsImlhdCI6MTY1NjQyMTA3MiwiZXhwIjoxNjU2NDI0NjcyfQ.jvBw2yNFHJdTtGm1V7ki5gUn8csu4E2S16HGljx8fSs
+Authorization: bearer 
 
 {
-    "comment": "comment 3"
+    "comment": "comment 4"
 }
 

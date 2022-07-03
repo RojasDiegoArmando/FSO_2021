@@ -33,7 +33,10 @@ beforeEach(async () => {
 
     const { token } = authUser.body
 
-    const blogsObjects = initialBlogs.map(blog => ({ ...blog, userId: user.id }))
+    const blogsObjects = initialBlogs.map((blog) => ({
+        ...blog,
+        userId: user.id,
+    }))
 
     for (let blog of blogsObjects) {
         await api
@@ -56,7 +59,6 @@ describe('GET method', () => {
     })
 
     test('there are two blogs', async () => {
-
         const response = await api
             .get('/api/bloglist')
             .expect(200)
@@ -65,19 +67,17 @@ describe('GET method', () => {
     })
 
     test('verifies that the unique identifier is named id', async () => {
-
         const response = await api
             .get('/api/bloglist')
             .expect(200)
             .expect('Content-Type', /application\/json/)
 
-        const idsObject = response.body.map(blog => blog.likes)
+        const idsObject = response.body.map((blog) => blog.likes)
         expect(idsObject).toBeDefined()
     })
 })
 
 describe('POST method', () => {
-
     test('a valid blog can be added', async () => {
         const users = await user_helper.usersInDb()
         const user = users[0]
@@ -95,7 +95,7 @@ describe('POST method', () => {
             title: 'President',
             url: 'www.tothemoon.com.ar',
             likes: 69,
-            userId: user.id
+            userId: user.id,
         }
         const savedBlog = await api
             .post('/api/bloglist')
@@ -107,7 +107,7 @@ describe('POST method', () => {
         const blogsAtEnd = await blogsInDb()
         expect(blogsAtEnd).toHaveLength(initialBlogs.length + 1)
 
-        const authors = blogsAtEnd.map(blog => blog.author)
+        const authors = blogsAtEnd.map((blog) => blog.author)
         expect(authors).toContain('Carlos Menem')
     })
 
@@ -124,7 +124,7 @@ describe('POST method', () => {
         const newBlog = {
             author: 'Palermo',
             title: 'Boca Juniors',
-            url: 'www.boca.com.ar'
+            url: 'www.boca.com.ar',
         }
         const { body: savedBlog } = await api
             .post('/api/bloglist')
@@ -151,7 +151,7 @@ describe('POST method', () => {
 
         const newBlog = {
             url: 'www.mercadolibre.com.ar',
-            likes: 10
+            likes: 10,
         }
 
         await api
@@ -162,12 +162,10 @@ describe('POST method', () => {
 
         const blogsAtEnd = await blogsInDb()
         expect(blogsAtEnd).toHaveLength(initialBlogs.length)
-
     }, 10000)
 })
 
 describe('DELETE Method', () => {
-
     test('delete one blog', async () => {
         const users = await user_helper.usersInDb()
         const user = users[0]
@@ -189,10 +187,9 @@ describe('DELETE Method', () => {
         const blogsAtEnd = await blogsInDb()
         expect(blogsAtEnd).toHaveLength(initialBlogs.length - 1)
 
-        const authors = blogsAtEnd.map(blog => blog.author)
+        const authors = blogsAtEnd.map((blog) => blog.author)
         expect(authors).not.toContain(blogToDelete.author)
     })
-
 })
 
 describe('PUT Method', () => {
@@ -200,16 +197,13 @@ describe('PUT Method', () => {
         const allBlogs = await blogsInDb()
         const idToUpdate = allBlogs[0].id
         const newBlog = {
-            author: 'Cardona Edwin'
+            author: 'Cardona Edwin',
         }
 
-        await api
-            .put(`/api/bloglist/${idToUpdate}`)
-            .send(newBlog)
-            .expect(200)
+        await api.put(`/api/bloglist/${idToUpdate}`).send(newBlog).expect(200)
 
         const blogsAtEnd = await blogsInDb()
-        const authors = blogsAtEnd.map(blog => blog.author)
+        const authors = blogsAtEnd.map((blog) => blog.author)
         expect(authors).toContain('Cardona Edwin')
         expect(blogsAtEnd).toHaveLength(initialBlogs.length)
     }, 10000)
