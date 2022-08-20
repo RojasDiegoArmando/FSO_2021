@@ -85,7 +85,7 @@ let books = [
         author: 'Fyodor Dostoevsky',
         id: "afa5de04-344d-11e9-a414-719c6709cf3e",
         genres: ['classic', 'revolution']
-    },
+    }
 ]
 
 const typeDefs = gql`
@@ -97,30 +97,45 @@ const typeDefs = gql`
     genres: [String!]!
   }
 
+  type Author {
+    name: String!
+    bookCount: Int! 
+  }
+
   type Query {
     bookCount: Int!
     authorCount: Int
     allBooks: [Book!]!
+    allAuthors: [Author!]!
   }
 `
+
+const booksByAuthor = (books) => {
+    let booksByAuthor = new Map()
+    books.forEach(book => {
+        const name = book.author
+        if (booksByAuthor.has(name)) {
+            booksByAuthor.set(name, { name, bookCount: booksByAuthor.get(name).bookCount + 1 })
+        } else {
+            booksByAuthor.set(name, { name, bookCount: 1 })
+        }
+    })
+
+    return [...booksByAuthor.values()]
+}
 
 const resolvers = {
     Query: {
         bookCount: () => books.length,
         authorCount: () => {
-            let booksByAuthor = new Map()
-            books.forEach(book => {
-                const name = book.author
-                if (booksByAuthor.has(name)) {
-                    booksByAuthor.set(name, { books: booksByAuthor.get(name).books + 1 })
-                } else {
-                    booksByAuthor.set(name, { books: 1 })
-                }
-            })
-
-            return booksByAuthor.size
+            const result = booksByAuthor(books)
+            return result.length
         },
-        allBooks: () => books
+        allBooks: () => books,
+        allAuthors: () => {
+            const result = booksByAuthor(books)
+            return result
+        }
     }
 }
 

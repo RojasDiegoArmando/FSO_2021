@@ -50,30 +50,33 @@ let books = [
     },
 ]
 
-let blogsByAuthorMap = books.reduce((acc, curr) => {
+const booksByAuthor = (books) => {
+    let booksByAuthor = new Map()
+    books.forEach(book => {
+        const name = book.author
+        if (booksByAuthor.has(name)) {
+            booksByAuthor.set(name, { name, bookCount: booksByAuthor.get(name).bookCount + 1 })
+        } else {
+            booksByAuthor.set(name, { name, bookCount: 1 })
+        }
+    })
+
+    return [...booksByAuthor.values()]
+}
+
+const result = booksByAuthor(books)
+
+console.log(result)
+console.log(`Con forEach: ${result.length}`)
+
+let resultado = books.reduce((acc, curr) => {
     const name = curr.author
     if (acc.has(name)) {
-        acc.set(name, { name, blogs: acc.get(name).books + 1 })
+        acc.set(name, { name, bookCount: acc.get(name).bookCount + 1 })
     } else {
-        acc.set(name, { name, books: 1 })
+        acc.set(name, { name, bookCount: 1 })
     }
     return acc
 }, new Map())
-
-
-const blogsByAuthor = [...blogsByAuthorMap.values()]
-console.log(blogsByAuthorMap.size)
-console.log(blogsByAuthor)
-
-let nmap = new Map()
-books.forEach(book => {
-    const name = book.author
-    if (nmap.has(name)) {
-        nmap.set(name, { name, books: nmap.get(name).books + 1 })
-    } else {
-        nmap.set(name, { name, books: 1 })
-    }
-    return nmap
-})
-
-console.log(nmap.size)
+console.log(resultado)
+console.log(`Con reduce: ${resultado.size}`)
