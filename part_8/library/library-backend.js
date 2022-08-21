@@ -105,7 +105,7 @@ const typeDefs = gql`
   type Query {
     bookCount: Int!
     authorCount: Int
-    allBooks(name: String): [Book!]!
+    allBooks(author: String, genre: String): [Book!]!
     allAuthors: [Author!]!
   }
 `
@@ -113,15 +113,44 @@ const typeDefs = gql`
 const booksByAuthor = (books) => {
     let booksByAuthor = new Map()
     books.forEach(book => {
-        const name = book.author
-        if (booksByAuthor.has(name)) {
-            booksByAuthor.set(name, { name, bookCount: booksByAuthor.get(name).bookCount + 1 })
+        const author = book.author
+        if (booksByAuthor.has(author)) {
+            booksByAuthor.set(author, { author, bookCount: booksByAuthor.get(author).bookCount + 1 })
         } else {
-            booksByAuthor.set(name, { name, bookCount: 1 })
+            booksByAuthor.set(author, { author, bookCount: 1 })
         }
     })
 
     return [...booksByAuthor.values()]
+}
+
+const filterBooks = ({ author, genre }) => {
+    let result
+    let newRes = []
+    if (author) {
+        result = books.filter(b => b.author === author)
+    }
+
+    if (genre) {
+        if (result) {
+            result.forEach(book => {
+                let res = book.genres.filter(genre => genre === genre)
+                if (res[0] === genre) {
+                    newRes.push({ ...book })
+                }
+            })
+        } else {
+            books.forEach(book => {
+                let res = book.genres.filter(genre => genre === genre)
+                if (res[0] === genre) {
+                    newRes.push({ ...book })
+                }
+            })
+        }
+    }
+
+    if (genre) return newRes
+    if (author) return result
 }
 
 const resolvers = {
@@ -132,12 +161,11 @@ const resolvers = {
             return result.length
         },
         allBooks: (root, args) => {
-            if (!args.name) {
-                return books
+            if (args.author || args.genre) {
+                const result = filterBooks(args)
+                return result
             }
-
-            const booksBy = books.filter(b => b.author === args.name)
-            return booksBy
+            return books
         },
         allAuthors: () => {
             const result = booksByAuthor(books)

@@ -49,7 +49,7 @@ let books = [
         genres: ['classic', 'revolution']
     },
 ]
-
+/*
 const booksByAuthor = (books) => {
     let booksByAuthor = new Map()
     books.forEach(book => {
@@ -80,3 +80,58 @@ let resultado = books.reduce((acc, curr) => {
 }, new Map())
 console.log(resultado)
 console.log(`Con reduce: ${resultado.size}`)
+*/
+
+let result = []
+books.forEach(book => {
+    let res = book.genres.filter(genre => genre === 'refactoring')
+
+    if (res[0] === 'refactoring') {
+        result.push({ ...book })
+    }
+})
+
+let result2 = books.map(book => {
+    let res = book.genres.filter(genre => genre === 'refactoring')
+    if (res[0] === 'refactoring') {
+        return { ...book }
+    }
+    return null
+})
+//console.log(result)
+
+//console.log(result2)
+
+const filterBooks = ({ author, genre }) => {
+    console.log(author, genre)
+    let result
+    let newRes = []
+    if (author) {
+        result = books.filter(b => b.author === author)
+    }
+
+    if (genre) {
+        if (result) {
+            result.forEach(book => {
+                let res = book.genres.filter(genre => genre === genre)
+                if (res[0] === genre) {
+                    newRes.push({ ...book })
+                }
+            })
+        } else {
+            books.forEach(book => {
+                let res = book.genres.filter(genre => genre === genre)
+                if (res[0] === genre) {
+                    newRes.push({ ...book })
+                }
+            })
+        }
+    }
+
+    if (genre) return newRes
+    if (author) return result
+    return books
+}
+
+let res3 = filterBooks({ author: "Robert Martin" })
+console.log(res3)
