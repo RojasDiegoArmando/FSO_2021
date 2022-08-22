@@ -102,6 +102,7 @@ const typeDefs = gql`
     name: String!
     born: Int
     bookCount: Int! 
+    id: ID!
   }
 
   type Query {
@@ -159,8 +160,7 @@ const resolvers = {
     Query: {
         bookCount: () => books.length,
         authorCount: () => {
-            const result = booksByAuthor(books)
-            return result.length
+            return authors.length
         },
         allBooks: (root, args) => {
             if (args.author || args.genre) {

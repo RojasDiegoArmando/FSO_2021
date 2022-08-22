@@ -6,6 +6,7 @@ query {
         name,
         born,
         bookCount
+        id
     }
 }
 `
@@ -32,6 +33,20 @@ mutation addBook($title: String!, $author: String!, $published: Int!, $genres: [
         author
         published
         genres
+        id
+    }
+}
+`
+
+export const EDIT_BORN = gql`
+mutation editBorn($name: String!, $setBornTo: Int!){
+    editAuthor(
+        name: $name,
+        setBornTo: $setBornTo
+    ) {
+        name,
+        born,
+        bookCount
         id
     }
 }
